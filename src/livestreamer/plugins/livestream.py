@@ -1,4 +1,4 @@
-from livestreamer.stream import AkamaiHDStream
+from livestreamer.stream import AkamaiHDStream, StreamType
 from livestreamer.plugins import Plugin, PluginError, NoStreamsError
 from livestreamer.utils import urlget, verifyjson
 
@@ -52,7 +52,10 @@ class Livestream(Plugin):
 
         return streams
 
-    def _get_streams(self):
+    def _get_streams(self, type):
+        if type not in (None, StreamType.AHS):
+            return {}
+    
         self.logger.debug("Fetching stream info")
         info = self._get_stream_info()
 

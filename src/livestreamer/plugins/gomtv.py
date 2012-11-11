@@ -23,7 +23,7 @@ limitations under the License.
 
 from livestreamer.compat import str, bytes, urlparse, urljoin, unquote
 from livestreamer.plugins import Plugin, PluginError, NoStreamsError
-from livestreamer.stream import HTTPStream
+from livestreamer.stream import HTTPStream, StreamType
 from livestreamer.utils import urlget, urlopen
 from livestreamer.options import Options
 
@@ -65,7 +65,10 @@ class GomTV(Plugin):
 
         Plugin.__init__(self, url)
 
-    def _get_streams(self):
+    def _get_streams(self, type):
+        if type not in (None, StreamType.HTTP):
+            return {}
+
         self.rsession = requests.session(prefetch=True)
 
         options = self.options

@@ -54,7 +54,7 @@ class Plugin(object):
     def get_option(cls, key):
         return cls.options.get(key)
 
-    def get_streams(self):
+    def get_streams(self, type = None):
         """
             Retrieves and returns a :class:`dict` containing the streams.
 
@@ -65,7 +65,7 @@ class Plugin(object):
             to be of highest quality and vice versa for *worst*.
         """
 
-        streams = self._get_streams()
+        streams = self._get_streams(type)
 
         best = (0, None)
         worst = (sys.maxint, None)
@@ -85,7 +85,7 @@ class Plugin(object):
 
         return streams
 
-    def _get_streams(self):
+    def _get_streams(self, type):
         raise NotImplementedError
 
 class PluginError(Exception):

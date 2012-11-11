@@ -1,6 +1,6 @@
 from livestreamer.compat import str, bytes
 from livestreamer.plugins import Plugin, PluginError, NoStreamsError
-from livestreamer.stream import RTMPStream
+from livestreamer.stream import RTMPStream, StreamType
 from livestreamer.utils import urlget
 
 import re
@@ -15,7 +15,10 @@ class Ongamenet(Plugin):
     def can_handle_url(self, url):
         return "ongamenet.com" in url
 
-    def _get_streams(self):
+    def _get_streams(self, type):
+        if type not in (None, StreamType.RTMP):
+            return {}
+    
         res = urlget(self.PlayerURL)
         urls = re.findall("return \"(rtmp://.+)\"", res.text)
         streams = {}

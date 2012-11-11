@@ -1,6 +1,6 @@
 from livestreamer.compat import bytes, str
 from livestreamer.plugins import Plugin, PluginError, NoStreamsError
-from livestreamer.stream import RTMPStream
+from livestreamer.stream import RTMPStream, StreamType
 from livestreamer.utils import urlget
 
 import re
@@ -72,7 +72,10 @@ class OwnedTV(Plugin):
         else:
             return "".join(res)
 
-    def _get_streams(self):
+    def _get_streams(self, type):
+        if type not in (None, StreamType.RTMP):
+            return {}
+    
         (liveid, swfurl) = self._get_channel_info(self.url)
 
         if not (liveid and swfurl):

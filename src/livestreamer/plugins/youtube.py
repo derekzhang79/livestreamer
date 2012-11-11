@@ -1,6 +1,6 @@
 from livestreamer.compat import str, bytes, parse_qs
 from livestreamer.plugins import Plugin, PluginError, NoStreamsError
-from livestreamer.stream import HTTPStream
+from livestreamer.stream import HTTPStream, StreamType
 from livestreamer.utils import urlget, verifyjson
 
 import re
@@ -54,7 +54,10 @@ class Youtube(Plugin):
 
         return formats
 
-    def _get_streams(self):
+    def _get_streams(self, type):
+        if type not in (None, StreamType.HTTP):
+            return {}
+
         info = self._get_stream_info(self.url)
 
         if not info:
